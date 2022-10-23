@@ -6,65 +6,48 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(InputManager))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] Gradient ColorGradient;
     [SerializeField] TrailRenderer TrailRenderer;
-    [SerializeField] float maxIntensity;
-    public int score;
     [SerializeField] float MaxSpeed;
-    float maxSpeed;
-    float jumpHeight;
     [SerializeField] float MaxJumpHeight;
-    [SerializeField] float gravity;
-    [SerializeField] LayerMask stableGroundLayer;
-    float speedSmoothVelocity;
-    [Range(0, 1)]
-    [SerializeField] float airControlPercent = 0.2f;
-    [SerializeField] float speedSmoothTime = 0.1f;
+    [SerializeField] LayerMask StableGroundLayer;
 
-    [SerializeField] AudioClip jumpClip;
+    public int score;
+
+    /*[SerializeField] AudioClip jumpClip;
     [SerializeField] AudioClip hitClip;
     [SerializeField] AudioClip pick1Clip;
     [SerializeField] AudioClip pick2Clip;
     public AudioClip putClip;
-    public AudioClip openPortalClip;
+    public AudioClip openPortalClip;*/
 
     public bool isGrounded;
     //LevelManager _levelManager;
-    [SerializeField] Light2D _pointLight;
+    //[SerializeField] Light2D _pointLight;
 
     Rigidbody2D rb;
     float _currentSpeed;
     bool _jump;
 
-    float dir = 0f;
-    float dirY = 0f;
-
-    Vector2 _input = Vector2.zero;
-    Vector2 _lastVelocity = Vector2.zero;
-
-    [SerializeField] float Accelertation = 7f;
-    [SerializeField] float Decceleration = 7f;
-    [SerializeField] float VelPower = 0.9f;
-    [SerializeField] float FrictionAmount = 0.2f;
+    InputManager _input;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        _input = GetComponent<InputManager>();
+        
     }
     private void Start()
     {
-        maxSpeed = MaxSpeed;
-        jumpHeight = MaxJumpHeight;
-        //_levelManager = FindObjectOfType<LevelManager>();
+
     }
 
     void Update()
     {
-        _input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-
-        if (isGrounded && _input.y > 0)
+        if (isGrounded && (_input.Movement.y > 0 || _input.GetKey(Action.Jump)))
         {
             _jump = true;
         }
@@ -72,27 +55,22 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        float yVelocity = rb.velocity.y;
+        float xVelocity;
+
         if (_jump) //handle jump
         {
             //FindObjectOfType<SoundManager>().PlayClip(jumpClip, 0.35f);
             _jump = false;
-            rb.AddForce(Vector2.up * jumpHeight, ForceMode2D.Impulse);
+            yVelocity = Mathf.Sqrt(-2 * Physics2D.gravity.y * rb.gravityScale * MaxJumpHeight);
         }
 
-        // X movement
-        float targetSpeed = _input.x * MaxSpeed;
-        float speedDelta = targetSpeed - rb.velocity.x;
-        float accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? Accelertation : Decceleration;
-        float movement = Mathf.Pow(Mathf.Abs(speedDelta) * accelRate, VelPower) * Mathf.Sign(speedDelta);
-        rb.AddForce(movement * Vector2.right);
-
-        // Friction
-        if (isGrounded && _input.x == 0f)
+        //if (isGrounded)
         {
-            float amount = Mathf.Min(Mathf.Abs(rb.velocity.x), Mathf.Abs(FrictionAmount));
-            amount *= Mathf.Sign(rb.velocity.x);
-            rb.AddForce(Vector2.right * -amount, ForceMode2D.Impulse);
+            _currentSpeed = MaxSpeed;
+            xVelocity = _currentSpeed * _input.Movement.x;
         }
+        rb.velocity = new Vector2(xVelocity, yVelocity);
     }
     private void OnTriggerStay2D(Collider2D collision)
     {

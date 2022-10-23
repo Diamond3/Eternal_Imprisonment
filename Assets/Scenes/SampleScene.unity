@@ -463,6 +463,32 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1426991337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7541634131073747919, guid: 23d0e04bcb33a1e47a9f1fced7a704b2, type: 3}
+  m_PrefabInstance: {fileID: 1977867555}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1426991344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426991337}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f60031fe4add68489c7099993869978, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMoveSpeed: 0
+  baseMoveSpeed: 500
+  jumpForce: 10
+  jumps: 3
+  dashSpeed: 800
+  dashDuration: 4
+  knockbackForce: 10
+  knockbackDuration: 1
+  accelBoost: 10
 --- !u!1001 &1977867555
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -536,7 +562,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7541634131073747914, guid: 23d0e04bcb33a1e47a9f1fced7a704b2, type: 3}
       propertyPath: MaxSpeed
-      value: 15
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7541634131073747914, guid: 23d0e04bcb33a1e47a9f1fced7a704b2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7541634131073747914, guid: 23d0e04bcb33a1e47a9f1fced7a704b2, type: 3}
       propertyPath: isGrounded
@@ -549,6 +579,10 @@ PrefabInstance:
     - target: {fileID: 7541634131073747914, guid: 23d0e04bcb33a1e47a9f1fced7a704b2, type: 3}
       propertyPath: Decceleration
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7541634131073747914, guid: 23d0e04bcb33a1e47a9f1fced7a704b2, type: 3}
+      propertyPath: MaxJumpHeight
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7541634131073747914, guid: 23d0e04bcb33a1e47a9f1fced7a704b2, type: 3}
       propertyPath: FrictionAmount
