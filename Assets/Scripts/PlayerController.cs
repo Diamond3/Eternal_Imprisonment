@@ -13,7 +13,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TrailRenderer TrailRenderer;
     [SerializeField] float MaxSpeed;
     [SerializeField] float MaxJumpHeight;
+
+    [Space]
     [SerializeField] LayerMask StableGroundLayer;
+    [SerializeField] Transform GroundCheckPoint;
+    [SerializeField] Vector2 GroundCheckSize;
 
     public int score;
 
@@ -32,6 +36,11 @@ public class PlayerController : MonoBehaviour
     float _currentSpeed;
     bool _jump;
 
+    float _lastGroundedTime = 0f;
+    float _lastJumpTime = 0f;
+    bool _isJumping = false;
+    bool _jumpInputReleased = true;
+
     InputManager _input;
 
     void Awake()
@@ -47,9 +56,15 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        isGrounded = false;
+        if (Physics2D.OverlapBox(GroundCheckPoint.position, GroundCheckSize, 0, StableGroundLayer))
+        {
+            isGrounded = true;
+        }
         if (isGrounded && (_input.Movement.y > 0 || _input.GetKey(Action.Jump)))
         {
-            _jump = true;
+            _isJumping = true;
+
         }
     }
 
@@ -72,22 +87,28 @@ public class PlayerController : MonoBehaviour
         }
         rb.velocity = new Vector2(xVelocity, yVelocity);
     }
-    private void OnTriggerStay2D(Collider2D collision)
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(GroundCheckPoint.position, new Vector3(GroundCheckSize.x * 2, GroundCheckSize.y * 2));
+    }
+    /*private void OnTriggerStay2D(Collider2D collision)
     {
         if (!isGrounded && collision.CompareTag("Ground"))
         {
             //_currentSpeed = 0;
             isGrounded = true;
         }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
+    }*/
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Ground"))
         {
             //_currentSpeed = 0;
             isGrounded = true;
         }
-        /*if (collision.CompareTag("Pickable"))
+        *//*if (collision.CompareTag("Pickable"))
         {
             var clip = UnityEngine.Random.Range(0, 2) == 0 ? pick1Clip : pick2Clip;
             //FindObjectOfType<SoundManager>().PlayClip(clip, 0.35f);
@@ -97,19 +118,19 @@ public class PlayerController : MonoBehaviour
             AdjustIntensity();
             Destroy(collision.gameObject);
         }*/
-        /*if (collision.CompareTag("Alien"))
-        {
-            //_killScore++;
-            //FindObjectOfType<SoundManager>().PlayClip(hitClip, 0.15f);
-            collision.tag = "Untagged";
-            collision.transform.parent.GetComponent<Animator>().SetTrigger("Die");
-            var vel = collision.transform.parent.GetComponent<Rigidbody2D>().velocity;
-            collision.transform.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, vel.y);
-            //_levelManager.RemoveNpc();
-            AdjustSpeeds();
-            Destroy(collision.gameObject, 2.5f);
-        }*/
-    }
+    /*if (collision.CompareTag("Alien"))
+    {
+        //_killScore++;
+        //FindObjectOfType<SoundManager>().PlayClip(hitClip, 0.15f);
+        collision.tag = "Untagged";
+        collision.transform.parent.GetComponent<Animator>().SetTrigger("Die");
+        var vel = collision.transform.parent.GetComponent<Rigidbody2D>().velocity;
+        collision.transform.parent.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, vel.y);
+        //_levelManager.RemoveNpc();
+        AdjustSpeeds();
+        Destroy(collision.gameObject, 2.5f);
+    }*//*
+}*/
 
     /*private void AdjustSpeeds()
     {
@@ -139,11 +160,11 @@ public class PlayerController : MonoBehaviour
         _pointLight.pointLightOuterRadius = Mathf.Lerp(4f, 7f, (float)score / maxShards);
     }*/
 
-    private void OnTriggerExit2D(Collider2D collision)
+    /*private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Ground"))
         {
             isGrounded = false;
         }
-    }
+    }*/
 }
