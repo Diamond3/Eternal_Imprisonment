@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+	public PlayerData OriginalPlayerData;
 	public PlayerData Data;
 
 	#region COMPONENTS
@@ -45,6 +46,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
 	{
 		RB = GetComponent<Rigidbody2D>();
+		Data = OriginalPlayerData.DeepCopy();
 	}
 
 	private void Start()
@@ -296,5 +298,5 @@ public class PlayerMovement : MonoBehaviour
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireCube(_groundCheckPoint.position, _groundCheckSize);
 	}
-    #endregion
+	#endregion
 }
