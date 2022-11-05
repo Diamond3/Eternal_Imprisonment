@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,27 +9,36 @@ public class Crab : MonoBehaviour
     const string RIGHT = "right";
 
     [SerializeField]
-    Transform castPos;
-
+    Transform _castPos;
     [SerializeField]
-    float baseHorizontalCastDist;
-
+    float _baseHorizontalCastDist;
     [SerializeField]
-    float baseVerticalCastDist;
+    float _baseVerticalCastDist;
+    [SerializeField]
+    float playerFollowDist;
+    [SerializeField]
+    Transform _playersTransform;
+    [SerializeField]
+    bool keepSceneViewActive;
 
-    string facingDirection;
+    string _facingDirection;
+    Rigidbody2D _rb2d;
+    Animator _anim;
 
-    Vector3 baseScale;
-
-    Rigidbody2D rb2d;
-    readonly float moveSpeed = 1;
+    readonly float _moveSpeed = 0.3f;
 
     // Start is called before the first frame update
     void Start()
     {
-        baseScale = transform.localScale;
-        facingDirection = RIGHT;
-        rb2d = GetComponent<Rigidbody2D>();
+        _facingDirection = RIGHT;
+        _rb2d = GetComponent<Rigidbody2D>();
+        _anim = GetComponent<Animator>();
+
+        // kad nepermestu i game ekrana, o liktu scene
+        if (keepSceneViewActive && Application.isEditor)
+        {
+            UnityEditor.SceneView.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
+        }
     }
 
     // Update is called once per frame
@@ -39,15 +49,25 @@ public class Crab : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float vX = moveSpeed;
+        float vX = _moveSpeed;
 
-        if(facingDirection == LEFT)
+        if(_facingDirection == LEFT)
         {
-            vX = -moveSpeed;
+            vX = -_moveSpeed;
         }
 
 
-        rb2d.velocity = new Vector2(vX, 0);
+        _rb2d.velocity = new Vector2(vX, 0);
+
+        if (IsPlayerClose())
+        {
+            MoveTowardsPlayer();
+        }
+
+        if(IsPlayerInAttackRange())
+        {
+            Attack();
+        }
 
         if (IsHittingWall() || IsAboutToFall())
         {
@@ -55,38 +75,80 @@ public class Crab : MonoBehaviour
         }
     }
 
-    void ChangeFacingDirection()
+    private void ChangeFacingDirection()
     {
         Vector3 currentScale = transform.localScale;
         currentScale.x = -transform.localScale.x;
         transform.localScale = currentScale;
 
-        facingDirection = facingDirection == LEFT ? RIGHT : LEFT;
+        _facingDirection = _facingDirection == LEFT ? RIGHT : LEFT;
     }
 
-    bool IsHittingWall()
+    private void ChangeFacingDirection(string direction)
     {
-        float castDist = facingDirection == LEFT ? -baseHorizontalCastDist : baseHorizontalCastDist;
+        if(_facingDirection != direction)
+        {
+            ChangeFacingDirection();
+        }
+    }
 
-        Vector3 targetPos = castPos.position;
+    private bool IsHittingWall()
+    {
+        float castDist = _facingDirection == LEFT ? -_baseHorizontalCastDist : _baseHorizontalCastDist;
+
+        Vector3 targetPos = _castPos.position;
         targetPos.x += castDist;
 
-        Debug.DrawLine(castPos.position, targetPos, Color.green);
+        Debug.DrawLine(_castPos.position, targetPos, Color.green);
 
-        bool val = Physics2D.Linecast(castPos.position, targetPos, 1 << LayerMask.NameToLayer("Ground"));
+        bool val = Physics2D.Linecast(_castPos.position, targetPos, 1 << LayerMask.NameToLayer("Ground"));
 
         return val;
     }
 
-    bool IsAboutToFall()
+    private bool IsAboutToFall()
     {
-        Vector3 targetPos = castPos.position;
-        targetPos.y -= baseVerticalCastDist;
+        Vector3 targetPos = _castPos.position;
+        targetPos.y -= _baseVerticalCastDist;
 
-        Debug.DrawLine(castPos.position, targetPos, Color.green);
+        Debug.DrawLine(_castPos.position, targetPos, Color.green);
 
-        bool val = !Physics2D.Linecast(castPos.position, targetPos, 1 << LayerMask.NameToLayer("Ground"));
+        bool val = !Physics2D.Linecast(_castPos.position, targetPos, 1 << LayerMask.NameToLayer("Ground"));
 
         return val;
+    }
+
+    private bool IsPlayerClose()
+    {
+        // crab and player are on different levels vertically so shouldn't follow even if it's close
+        var verticalFollowDist = 0.6f;
+        if (Math.Abs(_playersTransform.position.y - _rb2d.transform.position.y) > verticalFollowDist)
+        {
+            return false;
+        }
+
+        return Vector2.Distance(_playersTransform.position, _rb2d.transform.position) < playerFollowDist;
+    }
+
+    private void MoveTowardsPlayer()
+    {
+        ChangeFacingDirection(_rb2d.transform.position.x < _playersTransform.position.x ? RIGHT : LEFT);
+    }
+
+    private bool IsPlayerInAttackRange()
+    {
+        var attackRange = 0.6f;
+        return Vector2.Distance(_playersTransform.position, _rb2d.transform.position) < attackRange;
+    }
+
+    private void Attack()
+    {
+        print(_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name);
+        if (_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack"))
+        {
+            return;
+        }
+        int attackNumber = UnityEngine.Random.Range(1, 4);
+        _anim.Play($"Enemy Attack {attackNumber}");
     }
 }
