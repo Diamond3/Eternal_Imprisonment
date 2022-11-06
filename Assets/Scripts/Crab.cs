@@ -17,13 +17,14 @@ public class Crab : MonoBehaviour
     [SerializeField]
     float playerFollowDist;
     [SerializeField]
-    Transform _playersTransform;
+    float _verticalFollowDist = 0.6f;
     [SerializeField]
-    bool keepSceneViewActive;
+    float _attackRange = 0.6f;
 
     string _facingDirection;
     Rigidbody2D _rb2d;
     Animator _anim;
+    Transform _playersTransform;
 
     readonly float _moveSpeed = 0.3f;
 
@@ -33,12 +34,7 @@ public class Crab : MonoBehaviour
         _facingDirection = RIGHT;
         _rb2d = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
-
-        // kad nepermestu i game ekrana, o liktu scene
-        if (keepSceneViewActive && Application.isEditor)
-        {
-            UnityEditor.SceneView.FocusWindowIfItsOpen(typeof(UnityEditor.SceneView));
-        }
+        _playersTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -121,8 +117,7 @@ public class Crab : MonoBehaviour
     private bool IsPlayerClose()
     {
         // crab and player are on different levels vertically so shouldn't follow even if it's close
-        var verticalFollowDist = 0.6f;
-        if (Math.Abs(_playersTransform.position.y - _rb2d.transform.position.y) > verticalFollowDist)
+        if (Math.Abs(_playersTransform.position.y - _rb2d.transform.position.y) > _verticalFollowDist)
         {
             return false;
         }
@@ -137,13 +132,11 @@ public class Crab : MonoBehaviour
 
     private bool IsPlayerInAttackRange()
     {
-        var attackRange = 0.6f;
-        return Vector2.Distance(_playersTransform.position, _rb2d.transform.position) < attackRange;
+        return Vector2.Distance(_playersTransform.position, _rb2d.transform.position) < _attackRange;
     }
 
     private void Attack()
     {
-        print(_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name);
         if (_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack"))
         {
             return;

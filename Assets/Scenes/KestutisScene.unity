@@ -2535,8 +2535,8 @@ MonoBehaviour:
   _baseHorizontalCastDist: 0.1
   _baseVerticalCastDist: 0.3
   playerFollowDist: 2
-  _playersTransform: {fileID: 848387755}
-  keepSceneViewActive: 1
+  _verticalFollowDist: 0.6
+  _attackRange: 0.6
 --- !u!61 &579531748
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2684,7 +2684,7 @@ GameObject:
   - component: {fileID: 848387754}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
