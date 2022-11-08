@@ -28,7 +28,7 @@ public class PowerUpsManager : MonoBehaviour
         switch (powerUp.PowerUp)
         {
             case PowerUpType.AttackSpeed:
-                
+                GetComponent<ShootingLogic>().TimeBetweenAttacks *= (1 - powerUp.FloatValue);
                 break;
             case PowerUpType.MovementSpeed:
                 GetComponent<PlayerMovement>().Data.runMaxSpeed *= (1 + powerUp.FloatValue);

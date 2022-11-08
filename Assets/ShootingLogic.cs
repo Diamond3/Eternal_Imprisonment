@@ -6,15 +6,20 @@ public class ShootingLogic : MonoBehaviour
 {
     [SerializeField] GameObject _bulletPrefab;
     [SerializeField] float _bulletSpeed = 10f;
+    public float TimeBetweenAttacks = 0.7f;
+    float _nextAttackTime = 0f;
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!Input.GetMouseButtonDown(0)) return;
+        if (Time.time < _nextAttackTime) return;
+        if (!Input.GetMouseButton(0)) return;
+        _nextAttackTime = Time.time + TimeBetweenAttacks;
+
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         worldPoint.z = 0f;
         print(worldPoint);
