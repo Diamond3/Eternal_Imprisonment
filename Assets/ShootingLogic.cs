@@ -22,9 +22,7 @@ public class ShootingLogic : MonoBehaviour
 
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         worldPoint.z = 0f;
-        print(worldPoint);
         var dir = (worldPoint - transform.position).normalized;
-        print(dir);
         float rotAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         var bulletObj = Instantiate(_bulletPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, rotAngle)));
