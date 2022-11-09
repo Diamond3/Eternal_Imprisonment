@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public enum Action
 {
@@ -22,6 +23,15 @@ public class InputManager : MonoBehaviour
     public void Update()
     {
         Movement = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        #region Restart
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene("AidasScene", LoadSceneMode.Single);
+        }
+
+        #endregion
     }
 
     public bool GetKey(Action inputCode)
