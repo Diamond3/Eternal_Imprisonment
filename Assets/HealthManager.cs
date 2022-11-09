@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
-    public int maxHealth = 10;
-    public int currentHealth;
+    public float maxHealth = 10;
+    public float currentHealth;
+    public bool IsDead = false;
 
     public HealthBar healthBar;
 
@@ -13,7 +14,7 @@ public class HealthManager : MonoBehaviour
     void Start()
     {
         currentHealth = maxHealth;
-        healthBar.setMaxHealth(maxHealth);
+        healthBar.SetMaxHealth(maxHealth);
     }
 
     // Update is called once per frame
@@ -21,23 +22,25 @@ public class HealthManager : MonoBehaviour
     {
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
+        if (IsDead) return;
+
         currentHealth -= damage;
-        healthBar.setHealth(currentHealth);
+        healthBar.SetHealth(currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void Die()
     {
-        if (collision.gameObject.tag == "Enemy")
-        {
-            TakeDamage(5);
-        }
-
-        if (collision.gameObject.tag == "Spike")
-        {
-            TakeDamage(10);
-        }
-        Debug.Log(collision.gameObject.tag);
+        IsDead = true;
+        var anim = GetComponent<Animator>();
+        if (anim)
+            anim.SetTrigger("Death");
     }
 }

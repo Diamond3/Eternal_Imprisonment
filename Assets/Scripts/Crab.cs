@@ -8,29 +8,30 @@ public class Crab : MonoBehaviour
     const string LEFT = "left";
     const string RIGHT = "right";
 
-    [SerializeField]
-    Transform _castPos;
-    [SerializeField]
-    float _baseHorizontalCastDist;
-    [SerializeField]
-    float _baseVerticalCastDist;
-    [SerializeField]
-    float playerFollowDist;
-    [SerializeField]
-    float _verticalFollowDist = 0.6f;
-    [SerializeField]
-    float _attackRange = 0.6f;
+    [SerializeField] Transform _castPos;
+    [SerializeField] Transform _attackPos;
+
+    [SerializeField] float _baseHorizontalCastDist;
+    [SerializeField] float _baseVerticalCastDist;
+    [SerializeField] float playerFollowDist;
+    [SerializeField] float _verticalFollowDist = 0.6f;
+    [SerializeField] float _attackRange = 0.6f;
+    [SerializeField] float _attackAoERadius = 0.5f;
+    [SerializeField] float _attackDamage = 2f;
+    [SerializeField] float _stopRange = 0.4f;
 
     string _facingDirection;
     Rigidbody2D _rb2d;
     Animator _anim;
     Transform _playersTransform;
+    HealthManager _healthManager;
 
-    readonly float _moveSpeed = 0.3f;
+    [SerializeField] float _moveSpeed = 0.6f;
 
     // Start is called before the first frame update
     void Start()
     {
+        _healthManager = GetComponent<HealthManager>();
         _facingDirection = RIGHT;
         _rb2d = GetComponent<Rigidbody2D>();
         _anim = GetComponent<Animator>();
@@ -45,6 +46,11 @@ public class Crab : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_healthManager.IsDead)
+        {
+            _rb2d.velocity = new Vector2(0, _rb2d.velocity.y); //Reiks pakeist
+            return;
+        }
         float vX = _moveSpeed;
 
         if(_facingDirection == LEFT)
@@ -52,8 +58,11 @@ public class Crab : MonoBehaviour
             vX = -_moveSpeed;
         }
 
+        if ((transform.position - _playersTransform.position).sqrMagnitude <= _attackRange * _attackRange)
+            vX = 0;
 
-        _rb2d.velocity = new Vector2(vX, 0);
+        _rb2d.velocity = new Vector2(vX, _rb2d.velocity.y);
+        _anim.SetBool("Run", Mathf.Abs(_rb2d.velocity.x) > 0);
 
         if (IsPlayerClose())
         {
@@ -143,5 +152,23 @@ public class Crab : MonoBehaviour
         }
         int attackNumber = UnityEngine.Random.Range(1, 4);
         _anim.Play($"Enemy Attack {attackNumber}");
+    }
+
+    public void DoDamage()
+    {
+        var colliders = Physics2D.OverlapCircleAll(_attackPos.position, _attackAoERadius, 1 << LayerMask.NameToLayer("Default"));
+        foreach (var col in colliders)
+        {
+            if (col.CompareTag("Player"))
+            {
+                col.GetComponent<HealthManager>().TakeDamage(_attackDamage);
+                return;
+            }
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(_attackPos.position, _attackAoERadius);
     }
 }

@@ -12248,6 +12248,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4042248362210571200, guid: 00a82648338cc9444813c1eeaf24bfa1, type: 3}
+      propertyPath: _attackPos
+      value: 
+      objectReference: {fileID: 1917874446}
+    - target: {fileID: 4042248362210571200, guid: 00a82648338cc9444813c1eeaf24bfa1, type: 3}
+      propertyPath: _stopRange
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042248362210571200, guid: 00a82648338cc9444813c1eeaf24bfa1, type: 3}
+      propertyPath: _attackRange
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4042248362210571200, guid: 00a82648338cc9444813c1eeaf24bfa1, type: 3}
+      propertyPath: _attackAoERadius
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 4042248362210571201, guid: 00a82648338cc9444813c1eeaf24bfa1, type: 3}
       propertyPath: m_Name
       value: CrabEnemy
@@ -12296,6 +12312,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4042248362210571211, guid: 00a82648338cc9444813c1eeaf24bfa1, type: 3}
+      propertyPath: m_Mass
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00a82648338cc9444813c1eeaf24bfa1, type: 3}
 --- !u!4 &1165429855 stripped
@@ -12317,6 +12337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   currentHealth: 10
+  IsDead: 0
   healthBar: {fileID: 723978938}
 --- !u!1001 &1166302957
 PrefabInstance:
@@ -13213,6 +13234,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1868045700}
   m_CullTransparentMesh: 1
+--- !u!1 &1917874445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1917874446}
+  m_Layer: 8
+  m_Name: AttackPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1917874446
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917874445}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.227, y: -0.134, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1165429855}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2046037853
 GameObject:
   m_ObjectHideFlags: 0
@@ -13536,7 +13588,7 @@ TilemapCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -13561,4 +13613,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   currentHealth: 0
+  IsDead: 0
   healthBar: {fileID: 1491977342}
