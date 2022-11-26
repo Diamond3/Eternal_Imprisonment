@@ -43,4 +43,10 @@ public class HealthManager : MonoBehaviour
         if (anim)
             anim.SetTrigger("Death");
     }
+
+    public void RestoreHp(float amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        healthBar.SetHealth(currentHealth);
+    }
 }
