@@ -8,6 +8,7 @@ public class ShootingLogic : MonoBehaviour
     [SerializeField] float _bulletSpeed = 10f;
     public float TimeBetweenAttacks = 0.7f;
     float _nextAttackTime = 0f;
+    public bool AbleToShoot = false;
     void Start()
     {
 
@@ -16,6 +17,7 @@ public class ShootingLogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!AbleToShoot) return;
         if (Time.time < _nextAttackTime) return;
         if (!Input.GetMouseButton(0)) return;
         _nextAttackTime = Time.time + TimeBetweenAttacks;

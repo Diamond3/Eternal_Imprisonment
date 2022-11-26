@@ -58,7 +58,7 @@ public class Crab : MonoBehaviour
             vX = -_moveSpeed;
         }
 
-        if ((transform.position - _playersTransform.position).sqrMagnitude <= _attackRange * _attackRange)
+        if (_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Hit") || (transform.position - _playersTransform.position).sqrMagnitude <= _attackRange * _attackRange)
             vX = 0;
 
         _rb2d.velocity = new Vector2(vX, _rb2d.velocity.y);
@@ -146,7 +146,7 @@ public class Crab : MonoBehaviour
 
     private void Attack()
     {
-        if (_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack"))
+        if (_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack") || _anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Hit"))
         {
             return;
         }

@@ -30,6 +30,7 @@ public class PowerUp : MonoBehaviour
                 if (_hpconsumable)
                 {
                     _playerTransform.GetComponent<HealthManager>().RestoreHp(_restoreHpAmount);
+                    Destroy(gameObject);
                 }
                 else
                 {
