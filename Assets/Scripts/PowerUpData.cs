@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 public enum Type { Green, Yellow, Red}
-public enum PowerUpType { AttackSpeed, MovementSpeed, JumpHeight, AdditionalJump, Shooting}
+public enum PowerUpType { AttackSpeed, MovementSpeed, JumpHeight, Shooting}
 
 [CreateAssetMenu(menuName = "Power-Up Data")]
 public class PowerUpData : ScriptableObject

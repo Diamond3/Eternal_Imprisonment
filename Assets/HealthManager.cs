@@ -26,6 +26,12 @@ public class HealthManager : MonoBehaviour
     {
         if (IsDead) return;
 
+        var anim = GetComponent<Animator>();
+        if (anim != null)
+        {
+            anim.SetTrigger("Hit");
+        }
+
         currentHealth -= damage;
         healthBar.SetHealth(currentHealth);
 
@@ -38,9 +44,21 @@ public class HealthManager : MonoBehaviour
 
     void Die()
     {
+        Destroy(healthBar.gameObject);
         IsDead = true;
         var anim = GetComponent<Animator>();
         if (anim)
             anim.SetTrigger("Death");
+    }
+
+    public void RestoreHp(float amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        healthBar.SetHealth(currentHealth);
+    }
+
+    private void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 }
