@@ -33,6 +33,12 @@ public class PowerUpsManager : MonoBehaviour
             case PowerUpType.MovementSpeed:
                 GetComponent<PlayerMovement>().Data.runMaxSpeed *= (1 + powerUp.FloatValue);
                 break;
+            case PowerUpType.JumpHeight:
+                GetComponent<PlayerMovement>().Data.jumpHeight *= (1 + powerUp.FloatValue);
+                break;
+            case PowerUpType.Shooting:
+                GetComponent<ShootingLogic>().AbleToShoot = true;
+                break;
         }
     }
 
