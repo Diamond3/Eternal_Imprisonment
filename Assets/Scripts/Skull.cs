@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bat : MonoBehaviour
+public class Skull : MonoBehaviour
 {
     const string LEFT = "left";
     const string RIGHT = "right";
@@ -19,9 +19,13 @@ public class Bat : MonoBehaviour
     [SerializeField] float _attackAoERadius = 0.5f;
     [SerializeField] float _attackDamage = 2f;
     [SerializeField] float _stopRange = 0.4f;
+    [SerializeField] GameObject _bulletPrefab;
+    [SerializeField] float _bulletSpeed = 10f;
+    [SerializeField] float TimeBetweenAttacks = 1f;
 
     string _facingDirection;
     string _followingPoint;
+    float _nextAttackTime = 0f;
     Rigidbody2D _rb2d;
     Collider2D _collider;
     Animator _anim;
@@ -52,6 +56,12 @@ public class Bat : MonoBehaviour
     {
         if (_healthManager.IsDead)
         {
+            // jei nukrito - tegu pranyksta nes del jo animationo jis nukrenta zemiau groundo
+            if (_rb2d.velocity.y == 0 && _rb2d.gravityScale == 1)
+            {
+                Destroy(gameObject);
+            }
+
             _rb2d.gravityScale = 1; // kad nukristu
             _collider.isTrigger = false;
             _rb2d.velocity = new Vector2(0, _rb2d.velocity.y);
@@ -150,12 +160,25 @@ public class Bat : MonoBehaviour
 
     private void Attack()
     {
-        if (_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack"))
+        var test = _anim.GetCurrentAnimatorClipInfo(0);
+        if (_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Hit"))
         {
             return;
         }
-        int attackNumber = UnityEngine.Random.Range(1, 4);
-        _anim.Play($"Enemy Attack {attackNumber}");
+        _anim.SetTrigger("Hit");
+        ShootBullet();
+    }
+
+    private void ShootBullet()
+    {
+        if (Time.time < _nextAttackTime) return;
+        _nextAttackTime = Time.time + TimeBetweenAttacks;
+
+        var dir = (_playersTransform.position - transform.position).normalized;
+        float rotAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+
+        var bulletObj = Instantiate(_bulletPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, rotAngle)));
+        bulletObj.GetComponent<Rigidbody2D>().velocity = bulletObj.transform.right * _bulletSpeed;
     }
 
     public void DoDamage()
