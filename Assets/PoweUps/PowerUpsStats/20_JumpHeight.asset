@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d3d15d3993fa34489205fd5adfc0b17, type: 3}
-  m_Name: 50_AttackSpeed
+  m_Name: 20_JumpHeight
   m_EditorClassIdentifier: 
   Type: 1
-  PowerUp: 0
-  FloatValue: 0.5
+  PowerUp: 2
+  FloatValue: 0.2
   IntValue: 0
   BoolValue: 0
