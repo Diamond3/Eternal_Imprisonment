@@ -14,7 +14,7 @@ public class LevelEndScript : MonoBehaviour
 
     void Start()
     {
-        _endLevelText = gameObject.transform.Find("LevelEndText").gameObject.GetComponent<TextMeshPro>();
+        _endLevelText = transform.GetComponentInChildren<TextMeshPro>();
         _endLevelText.text = string.Empty;
     }
 
