@@ -390,6 +390,7 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 891615926289181341, guid: a129043ab08730b4c8083e0138cb84f7, type: 3}
   _bulletSpeed: 17
   TimeBetweenAttacks: 0.7
+  AbleToShoot: 0
 --- !u!114 &1491773762150314487
 MonoBehaviour:
   m_ObjectHideFlags: 0
