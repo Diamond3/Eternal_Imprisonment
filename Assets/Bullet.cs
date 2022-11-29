@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
         {
             if (collision.CompareTag("Enemy"))
             {
-                collision.GetComponent<HealthManager>().TakeDamage(Damage);
+                collision.GetComponentInParent<HealthManager>().TakeDamage(Damage); ;
             }
             Destroy(gameObject);
         }
