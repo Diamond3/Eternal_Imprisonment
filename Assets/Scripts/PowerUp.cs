@@ -13,9 +13,12 @@ public class PowerUp : MonoBehaviour
     PowerUpTextPanel _powerUpPanel;
     [SerializeField] string _text;
     [SerializeField] float _pickRadius = 3;
+    PowerUpsManager _powerUpsManager;
     public bool Active = true;
     void Start()
     {
+        _powerUpsManager = FindObjectOfType<PowerUpsManager>();
+
         _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         _powerUpPanel = FindObjectOfType<PowerUpTextPanel>();
     }
@@ -34,7 +37,7 @@ public class PowerUp : MonoBehaviour
                 }
                 else
                 {
-                    _playerTransform.GetComponent<PowerUpsManager>().AddNewPowerUp(_powerUpData);
+                    _powerUpsManager.AddNewPowerUp(_powerUpData, transform);
                 }
                 _powerUpPanel.HidePanel();
                 transform.GetComponentInChildren<SpriteSwap>().Swap();

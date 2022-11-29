@@ -53,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
 	{
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
+
+		FindObjectOfType<PowerUpsManager>().AddAllPowerUps(transform);
 	}
 
 	private void Update()
