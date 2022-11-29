@@ -37,7 +37,7 @@ public class PowerUp : MonoBehaviour
                 }
                 else
                 {
-                    _powerUpsManager.AddNewPowerUp(_powerUpData, transform);
+                    _powerUpsManager.AddNewPowerUp(_powerUpData, _playerTransform);
                 }
                 _powerUpPanel.HidePanel();
                 transform.GetComponentInChildren<SpriteSwap>().Swap();

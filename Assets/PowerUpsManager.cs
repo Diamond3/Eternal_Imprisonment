@@ -6,13 +6,13 @@ using UnityEngine;
 public class PowerUpsManager : MonoBehaviour
 {
     public List<PowerUpData> PowerUps = new();
-    static PowerUpsManager instance;
+    static PowerUpsManager _instance;
     private void Awake()
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = this;
-            DontDestroyOnLoad(instance);
+            _instance = this;
+            DontDestroyOnLoad(_instance);
         }
         else
         {
