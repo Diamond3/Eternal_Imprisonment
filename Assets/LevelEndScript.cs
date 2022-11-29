@@ -8,14 +8,18 @@ public class LevelEndScript : MonoBehaviour
 {
     const string LEVEL_END_TEXT = "PRESS ENTER";
 
-    TextMeshPro _endLevelText;
+    [SerializeField]
+    GameObject _endLevelPanel;
+    [SerializeField]
+    TextMeshProUGUI _textMeshProUGUI;
+
     bool _crRunning = false;
     Coroutine _textCoroutine;
 
     void Start()
     {
-        _endLevelText = transform.GetComponentInChildren<TextMeshPro>();
-        _endLevelText.text = string.Empty;
+        _endLevelPanel.SetActive(false);
+        _textMeshProUGUI.text = string.Empty;
     }
 
     void Update()
@@ -27,6 +31,7 @@ public class LevelEndScript : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !_crRunning)
         {
+            _endLevelPanel.SetActive(true);
             _textCoroutine = StartCoroutine(TypeText());
             _crRunning = true;
         }
@@ -36,9 +41,10 @@ public class LevelEndScript : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            _endLevelPanel.SetActive(false);
             _crRunning = false;
             StopCoroutine(_textCoroutine);
-            _endLevelText.text = string.Empty;
+            _textMeshProUGUI.text = string.Empty;
         }
     }
 
@@ -58,7 +64,7 @@ public class LevelEndScript : MonoBehaviour
     {
         foreach (char letter in LEVEL_END_TEXT)
         {
-            _endLevelText.text += letter;
+            _textMeshProUGUI.text += letter;
             // TODO: jei noresim ideti typinimo soundus:
             //if (typeSound1 && typeSound2)
             //    SoundManager.instance.RandomizeSfx(typeSound1, typeSound2);
