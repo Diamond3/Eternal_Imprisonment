@@ -73,4 +73,9 @@ public class PlayerData : ScriptableObject
 		runDecceleration = Mathf.Clamp(runDecceleration, 0.01f, runMaxSpeed);
 		#endregion
 	}
+
+	public void OnValidatePublic()
+    {
+		OnValidate();
+    }
 }
