@@ -48,6 +48,7 @@ public class PowerUpsManager : MonoBehaviour
                 break;
                 case PowerUpType.JumpHeight:
                 player.GetComponent<PlayerMovement>().Data.jumpHeight *= (1 + powerUp.FloatValue);
+                player.GetComponent<PlayerMovement>().Data.OnValidatePublic();
                 break;
             case PowerUpType.Shooting:
                 player.GetComponent<ShootingLogic>().AbleToShoot = true;
