@@ -6,6 +6,19 @@ using UnityEngine;
 public class PowerUpsManager : MonoBehaviour
 {
     public List<PowerUpData> PowerUps = new();
+    static PowerUpsManager instance;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(instance);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         
@@ -17,31 +30,38 @@ public class PowerUpsManager : MonoBehaviour
         
     }
 
-    internal void AddNewPowerUp(PowerUpData powerUp)
+    internal void AddNewPowerUp(PowerUpData powerUp, Transform player)
     {
         PowerUps.Add(powerUp);
-        UpdatePlayerStats(powerUp);
+        UpdatePlayerStats(powerUp, player);
     }
 
-    private void UpdatePlayerStats(PowerUpData powerUp)
+    private void UpdatePlayerStats(PowerUpData powerUp, Transform player)
     {
         switch (powerUp.PowerUp)
         {
             case PowerUpType.AttackSpeed:
-                GetComponent<ShootingLogic>().TimeBetweenAttacks *= (1 - powerUp.FloatValue);
+                player.GetComponent<ShootingLogic>().TimeBetweenAttacks *= (1 - powerUp.FloatValue);
                 break;
             case PowerUpType.MovementSpeed:
-                GetComponent<PlayerMovement>().Data.runMaxSpeed *= (1 + powerUp.FloatValue);
+                player.GetComponent<PlayerMovement>().Data.runMaxSpeed *= (1 + powerUp.FloatValue);
                 break;
-            case PowerUpType.JumpHeight:
-                GetComponent<PlayerMovement>().Data.jumpHeight *= (1 + powerUp.FloatValue);
+                case PowerUpType.JumpHeight:
+                player.GetComponent<PlayerMovement>().Data.jumpHeight *= (1 + powerUp.FloatValue);
                 break;
             case PowerUpType.Shooting:
-                GetComponent<ShootingLogic>().AbleToShoot = true;
+                player.GetComponent<ShootingLogic>().AbleToShoot = true;
                 break;
         }
     }
-
+    public void AddAllPowerUps(Transform player)
+    {
+        if (PowerUps.Count == 0) return;
+        foreach (var p in PowerUps)
+        {
+            UpdatePlayerStats(p, player);
+        }
+    }
     internal void AddNewPowerUpRange(List<PowerUpData> powerUpList)
     {
         PowerUps.AddRange(powerUpList);
