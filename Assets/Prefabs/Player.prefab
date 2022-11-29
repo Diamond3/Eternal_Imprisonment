@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 1491773762150314481}
   - component: {fileID: 1491773762150314480}
   - component: {fileID: 2131465592}
+  - component: {fileID: 915343584}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -389,7 +390,7 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 891615926289181341, guid: a129043ab08730b4c8083e0138cb84f7, type: 3}
   _bulletSpeed: 17
   TimeBetweenAttacks: 0.7
-  AbleToShoot: 0
+  AbleToShoot: 1
 --- !u!114 &2131465592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,6 +407,22 @@ MonoBehaviour:
   currentHealth: 0
   IsDead: 0
   healthBar: {fileID: 0}
+--- !u!70 &915343584
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333050229476102442}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.0000023841858, y: 0}
+  m_Size: {x: 0.96194744, y: 1}
+  m_Direction: 0
 --- !u!1 &333050229702013273
 GameObject:
   m_ObjectHideFlags: 0
