@@ -67,4 +67,9 @@ public class PowerUpsManager : MonoBehaviour
     {
         PowerUps.AddRange(powerUpList);
     }
+
+    public void CalculatePowerUpsCount()
+    {
+        int a = 0, j = 0, m = 0;
+    }
 }
