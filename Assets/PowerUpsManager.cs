@@ -7,6 +7,10 @@ public class PowerUpsManager : MonoBehaviour
 {
     public List<PowerUpData> PowerUps = new();
     static PowerUpsManager _instance;
+    float _attackSpeed = 0f;
+    float _jumpHeight = 0f;
+    float _movementSpeed = 0f;
+
     private void Awake()
     {
         if (_instance == null)
@@ -34,6 +38,8 @@ public class PowerUpsManager : MonoBehaviour
     {
         PowerUps.Add(powerUp);
         UpdatePlayerStats(powerUp, player);
+
+        FindObjectOfType<PowerUpUI>().UpdateText();
     }
 
     private void UpdatePlayerStats(PowerUpData powerUp, Transform player)
@@ -57,19 +63,28 @@ public class PowerUpsManager : MonoBehaviour
     }
     public void AddAllPowerUps(Transform player)
     {
+        _attackSpeed = player.GetComponent<ShootingLogic>().TimeBetweenAttacks;
+        _movementSpeed = player.GetComponent<PlayerMovement>().Data.runMaxSpeed;
+        _jumpHeight = player.GetComponent<PlayerMovement>().Data.jumpHeight;
+
         if (PowerUps.Count == 0) return;
         foreach (var p in PowerUps)
         {
             UpdatePlayerStats(p, player);
         }
+
+        FindObjectOfType<PowerUpUI>().UpdateText();
     }
     internal void AddNewPowerUpRange(List<PowerUpData> powerUpList)
     {
         PowerUps.AddRange(powerUpList);
     }
 
-    public void CalculatePowerUpsCount()
+    public (float, float, float) GetPowerUpsCount()
     {
-        int a = 0, j = 0, m = 0;
+        var ats = 1 - FindObjectOfType<ShootingLogic>().TimeBetweenAttacks / _attackSpeed;
+        var ms = FindObjectOfType<PlayerMovement>().Data.runMaxSpeed / _movementSpeed;
+        var jh = FindObjectOfType<PlayerMovement>().Data.jumpHeight / _jumpHeight;
+        return (ats, ms, jh);
     }
 }

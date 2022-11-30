@@ -221,8 +221,9 @@ MonoBehaviour:
   _powerUpData: {fileID: 11400000, guid: 2ecfe785befb3e548b58f3e8a0725a6c, type: 2}
   _hpconsumable: 0
   _restoreHpAmount: 3
-  _text: Increase Jump Height by 15%
+  _text: Increase Jump Height by 20%
   _pickRadius: 0.5
+  Active: 1
 --- !u!1001 &4475380528048996221
 PrefabInstance:
   m_ObjectHideFlags: 0

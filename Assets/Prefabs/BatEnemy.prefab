@@ -594,6 +594,9 @@ MonoBehaviour:
   currentHealth: 10
   IsDead: 0
   healthBar: {fileID: 2127368819642732454}
+  death: {fileID: 8300000, guid: 67b9143f1e65384419ebc1c5079fdd31, type: 3}
+  attack: {fileID: 0}
+  hit: {fileID: 8300000, guid: f29a54add5b760d4388c1216974e0db3, type: 3}
 --- !u!114 &2127368820254147792
 MonoBehaviour:
   m_ObjectHideFlags: 0

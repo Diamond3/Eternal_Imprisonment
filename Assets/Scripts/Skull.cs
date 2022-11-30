@@ -166,6 +166,7 @@ public class Skull : MonoBehaviour
             return;
         }
         _anim.SetTrigger("Hit");
+        _healthManager.PlayAttackSound();
         ShootBullet();
     }
 
