@@ -47,8 +47,12 @@ public class HealthManager : MonoBehaviour
         Destroy(healthBar.gameObject);
         IsDead = true;
         var anim = GetComponent<Animator>();
+
         if (anim)
+        {
+            anim.speed = 1f;
             anim.SetTrigger("Death");
+        }
     }
 
     public void RestoreHp(float amount)
