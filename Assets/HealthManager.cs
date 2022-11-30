@@ -80,17 +80,17 @@ public class HealthManager : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void PlayAttackSound()
+    public void PlayAttackSound()
     {
         if (attack == null) return;
         AudioSource.PlayClipAtPoint(attack, this.gameObject.transform.position, 0.3f);
     }
-    void PlayHitSound()
+    public void PlayHitSound()
     {
         if (hit == null) return;
         AudioSource.PlayClipAtPoint(hit, this.gameObject.transform.position, 0.3f);
     }
-    void PlayDeathSound()
+    public void PlayDeathSound()
     {
         if (death == null) return;
         AudioSource.PlayClipAtPoint(death, this.gameObject.transform.position, 0.3f);
