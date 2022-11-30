@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HealthManager : MonoBehaviour
 {
@@ -49,6 +51,15 @@ public class HealthManager : MonoBehaviour
         var anim = GetComponent<Animator>();
         if (anim)
             anim.SetTrigger("Death");
+        if (gameObject.CompareTag("Player"))
+        {
+            HandlePlayerDeath();
+        }
+    }
+
+    private void HandlePlayerDeath()
+    {
+        GameObject.Find("YouDiedImage").GetComponent<YouDiedImageScript>().FadeToBlack();
     }
 
     public void RestoreHp(float amount)
