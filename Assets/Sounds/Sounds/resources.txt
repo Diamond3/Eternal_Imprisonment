@@ -1,0 +1,2 @@
+die.wav - https://starmen.net/mother2/soundfx/die.wav
+jump, power-up, shoot - created with https://sfbgames.itch.io/chiptone

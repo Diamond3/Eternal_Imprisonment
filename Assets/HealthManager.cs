@@ -10,6 +10,8 @@ public class HealthManager : MonoBehaviour
 
     public HealthBar healthBar;
 
+    public AudioClip death, attack, hit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +27,7 @@ public class HealthManager : MonoBehaviour
     public void TakeDamage(float damage)
     {
         if (IsDead) return;
-
+        PlayHitSound();
         var anim = GetComponent<Animator>();
         if (anim != null)
         {
@@ -44,6 +46,7 @@ public class HealthManager : MonoBehaviour
 
     void Die()
     {
+        PlayDeathSound();
         Destroy(healthBar.gameObject);
         IsDead = true;
         var anim = GetComponent<Animator>();
@@ -64,5 +67,21 @@ public class HealthManager : MonoBehaviour
     private void DestroyObject()
     {
         Destroy(gameObject);
+    }
+
+    void PlayAttackSound()
+    {
+        if (attack == null) return;
+        AudioSource.PlayClipAtPoint(attack, this.gameObject.transform.position, 0.3f);
+    }
+    void PlayHitSound()
+    {
+        if (hit == null) return;
+        AudioSource.PlayClipAtPoint(hit, this.gameObject.transform.position, 0.3f);
+    }
+    void PlayDeathSound()
+    {
+        if (death == null) return;
+        AudioSource.PlayClipAtPoint(death, this.gameObject.transform.position, 0.3f);
     }
 }
