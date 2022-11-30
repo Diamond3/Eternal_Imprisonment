@@ -89,7 +89,7 @@ public class LevelEndScript : MonoBehaviour
             case "Level2":
                 levelEndText = LEVEL2_END_TEXT;
                 break;
-            case "Level4-Boss":
+            case "Level3":
                 levelEndText = LEVEL3_END_TEXT;
                 break;
             default:
@@ -103,7 +103,7 @@ public class LevelEndScript : MonoBehaviour
             //if (typeSound1 && typeSound2)
             //    SoundManager.instance.RandomizeSfx(typeSound1, typeSound2);
             yield return 0;
-            yield return new WaitForSeconds(0.03f);
+            yield return new WaitForSeconds(0.00003f);
         }
     }
 }
