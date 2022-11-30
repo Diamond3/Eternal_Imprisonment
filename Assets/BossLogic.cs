@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class BossLogic : MonoBehaviour
 {
+    [SerializeField] float _originalSpeed = 3f;
     [SerializeField] float _speed = 3f;
+
     [SerializeField] float _minRotateDist = 0.1f;
     [SerializeField] float _longAttackStopDistance = 1f;
     [SerializeField] float _shortAttackStopDistance = 1.5f;
-    [SerializeField] float _betweenAttacksTime = 1f;
+
+    [SerializeField] float _originalBetweenAttacksTime = 1.5f;
+    [SerializeField] float _betweenAttacksTime = 1.5f;
 
     [SerializeField] Transform _attackPoint;
     [SerializeField] Vector2 _shortAttackSize;
@@ -18,11 +22,16 @@ public class BossLogic : MonoBehaviour
     [SerializeField] Vector2 _longAttackSize;
     [SerializeField] float _longAttackDamage = 3f;
 
+    [SerializeField] float _playerOutOfRangeTime = 2f;
+
+    float _playerLastSeen = 0f;
+
     HealthManager _healthManager;
     float _nextAttack = 0f;
     Transform _player;
     Animator _anim;
     bool _isFacingRight = true;
+    bool _inMegaJump = false;
 
     enum Phases { Slow, Fast, Mad }
 
@@ -33,6 +42,10 @@ public class BossLogic : MonoBehaviour
         _player = GameObject.FindGameObjectWithTag("Player").transform;
         _anim = GetComponent<Animator>();
 
+        _betweenAttacksTime = _originalBetweenAttacksTime;
+        _speed = _originalSpeed;
+
+        _playerLastSeen = Time.time;
         _nextAttack = Time.time + _betweenAttacksTime;
     }
 
@@ -41,12 +54,16 @@ public class BossLogic : MonoBehaviour
     {
         if (_healthManager.IsDead) return;
         LookAtPlayer();
-        if (!IsPlayerInAttackRange() && !_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack") && !_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Smash"))
+        AdjustSpeeds();
+        if (PlayerOutOfRangeForTooLong()) return;
+        if (!IsPlayerInAttackRange() && !_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Attack") 
+            && !_anim.GetCurrentAnimatorClipInfo(0)[0].clip.name.Contains("Smash"))
         {
             Walk();
         }
         else
         {
+            _playerLastSeen = Time.time;
             if (Time.time >= _nextAttack)
             {
                 _anim.SetBool("Walk", false);
@@ -55,6 +72,33 @@ public class BossLogic : MonoBehaviour
             }
         }
         UpdateTimers();
+    }
+
+    private void AdjustSpeeds()
+    {
+        var maxHp = _healthManager.maxHealth;
+        var currentHp = _healthManager.currentHealth;
+        if (currentHp / maxHp < 0.5)
+        {
+            _anim.speed = 1.4f;
+        }
+        if (currentHp / maxHp < 0.25)
+        {
+            _anim.speed = 1.8f;
+        }
+
+        _betweenAttacksTime = _originalBetweenAttacksTime / _anim.speed;
+        _speed = _originalSpeed * _anim.speed;
+    }
+
+    private bool PlayerOutOfRangeForTooLong()
+    {
+        if (!_inMegaJump && _playerLastSeen + _playerOutOfRangeTime <= Time.time)
+        {
+            _anim.SetTrigger("Mega_Jump");
+            _inMegaJump = true;
+        }
+        return _inMegaJump;
     }
 
     private void Attack()
@@ -106,6 +150,7 @@ public class BossLogic : MonoBehaviour
             _isFacingRight = true;
         }
     }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
@@ -166,5 +211,31 @@ public class BossLogic : MonoBehaviour
                 return;
             }
         }
+    }
+
+    private void DoMegaSmash()
+    {
+        var colliders = Physics2D.OverlapBoxAll(transform.position, _shortAttackSize, 1 << LayerMask.NameToLayer("Default"));
+        DebugDrawBox(transform.position, _shortAttackSize, 0f, Color.blue);
+        foreach (var col in colliders)
+        {
+            if (col.CompareTag("Player"))
+            {
+                col.GetComponent<HealthManager>().TakeDamage(_shortAttackDamage);
+                _playerLastSeen = Time.time;
+                return;
+            }
+        }
+    }
+
+    private void SetToPlayerPosition()
+    {
+        transform.position = new Vector3(_player.position.x, transform.position.y);
+    }
+
+    private void ResetAnim()
+    {
+        _anim.ResetTrigger("Mega_Jump");
+        _inMegaJump = false;
     }
 }
