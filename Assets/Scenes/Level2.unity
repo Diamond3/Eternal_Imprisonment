@@ -5139,6 +5139,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 539476238}
     m_Modifications:
+    - target: {fileID: 572860517742959259, guid: f814e364b3f75cd49bde706518f42c0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 718432933691219746, guid: f814e364b3f75cd49bde706518f42c0c, type: 3}
       propertyPath: m_Name
       value: PowerUpPanelText
@@ -5225,6 +5229,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 718432933691219747, guid: f814e364b3f75cd49bde706518f42c0c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1131044240496606612, guid: f814e364b3f75cd49bde706518f42c0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7152192152963851650, guid: f814e364b3f75cd49bde706518f42c0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8894132084457700558, guid: f814e364b3f75cd49bde706518f42c0c, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
