@@ -9,6 +9,8 @@ public class ShootingLogic : MonoBehaviour
     public float TimeBetweenAttacks = 0.7f;
     float _nextAttackTime = 0f;
     public bool AbleToShoot = false;
+    public AudioClip _bulletClip;
+
     void Start()
     {
 
@@ -20,6 +22,8 @@ public class ShootingLogic : MonoBehaviour
         if (!AbleToShoot) return;
         if (Time.time < _nextAttackTime) return;
         if (!Input.GetMouseButton(0)) return;
+
+
         _nextAttackTime = Time.time + TimeBetweenAttacks;
 
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -29,5 +33,8 @@ public class ShootingLogic : MonoBehaviour
 
         var bulletObj = Instantiate(_bulletPrefab, transform.position, Quaternion.Euler(new Vector3(0, 0, rotAngle)));
         bulletObj.GetComponent<Rigidbody2D>().velocity = bulletObj.transform.right * _bulletSpeed;
+
+        if (_bulletClip == null) return;
+        AudioSource.PlayClipAtPoint(_bulletClip, this.gameObject.transform.position, 0.3f);
     }
 }

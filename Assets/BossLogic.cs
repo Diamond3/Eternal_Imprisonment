@@ -237,5 +237,6 @@ public class BossLogic : MonoBehaviour
     {
         _anim.ResetTrigger("Mega_Jump");
         _inMegaJump = false;
+        _playerLastSeen = Time.time;
     }
 }

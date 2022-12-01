@@ -390,7 +390,8 @@ MonoBehaviour:
   _bulletPrefab: {fileID: 891615926289181341, guid: a129043ab08730b4c8083e0138cb84f7, type: 3}
   _bulletSpeed: 17
   TimeBetweenAttacks: 0.7
-  AbleToShoot: 1
+  AbleToShoot: 0
+  _bulletClip: {fileID: 8300000, guid: b9929637e2efc54488dcd880d87cd36f, type: 3}
 --- !u!114 &2131465592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -403,10 +404,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f213500fa0426402b8fdb853ddbd6ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 25
   currentHealth: 0
   IsDead: 0
   healthBar: {fileID: 0}
+  death: {fileID: 8300000, guid: b758a0428bd5ba64ea4f2670ba90bb03, type: 3}
+  attack: {fileID: 0}
+  hit: {fileID: 8300000, guid: 69440aeb48036264aa7a9c9fb5edebb8, type: 3}
 --- !u!70 &915343584
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

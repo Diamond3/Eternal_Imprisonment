@@ -5,6 +5,7 @@ public class PlayerMovement : MonoBehaviour
 {
 	public PlayerData OriginalPlayerData;
 	public PlayerData Data;
+	public bool IgnorePowers = false;
 
 	#region COMPONENTS
     public Rigidbody2D RB { get; private set; }
@@ -53,8 +54,14 @@ public class PlayerMovement : MonoBehaviour
 	{
 		SetGravityScale(Data.gravityScale);
 		IsFacingRight = true;
+		if (IgnorePowers)
+        {
+			Data = OriginalPlayerData;
+			FindObjectOfType<PowerUpsManager>().PowerUps.Clear();
 
-		FindObjectOfType<PowerUpsManager>().AddAllPowerUps(transform);
+		}
+
+		//FindObjectOfType<PowerUpsManager>().AddAllPowerUps(transform);
 	}
 
 	private void Update()

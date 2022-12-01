@@ -10,9 +10,11 @@ public class PowerUpsManager : MonoBehaviour
     float _attackSpeed = 0f;
     float _jumpHeight = 0f;
     float _movementSpeed = 0f;
+    static bool _firstLoad = false;
 
     private void Awake()
     {
+        _firstLoad = true;
         if (_instance == null)
         {
             _instance = this;
@@ -31,7 +33,12 @@ public class PowerUpsManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (_firstLoad)
+        {
+            var player = FindObjectOfType<PlayerMovement>().transform;
+            AddAllPowerUps(player);
+            _firstLoad = false;
+        }
     }
 
     internal void AddNewPowerUp(PowerUpData powerUp, Transform player)
@@ -82,6 +89,7 @@ public class PowerUpsManager : MonoBehaviour
 
     public (float, float, float) GetPowerUpsCount()
     {
+        if (_firstLoad) return (float.MaxValue, float.MaxValue, float.MaxValue);
         var ats = 1 - FindObjectOfType<ShootingLogic>().TimeBetweenAttacks / _attackSpeed;
         var ms = FindObjectOfType<PlayerMovement>().Data.runMaxSpeed / _movementSpeed;
         var jh = FindObjectOfType<PlayerMovement>().Data.jumpHeight / _jumpHeight;

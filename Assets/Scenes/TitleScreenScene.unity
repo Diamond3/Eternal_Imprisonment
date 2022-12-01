@@ -1266,9 +1266,7 @@ MonoBehaviour:
     - https://chierit.itch.io/boss-demon-slime\r\nTileset: https://craftpix.net/freebies/free-medieval-tileset-pixel-art-pack/?\nEffects:\r\nFireball
     - https://xyezawr.itch.io/free\r\nBlood Splash - https://xyezawr.itch.io/free-pixel-effects-pack-11-mini-blood-splats\r\nExplosion
     - https://craftpix.net/freebies/11-free-pixel-art-explosion-sprites/\nSounds:\nPlayer:
-    \njump, power-up, shoot, hit - created with https://sfbgames.itch.io/chiptone\nSkull:\n
-    https://pixabay.com/sound-effects/search/gasp/?manual_search=1&order=None\nCrab:\n
-    https://pixabay.com/sound-effects/search/crack/?manual_search=1&order=None\nhttps://pixabay.com/sound-effects/search/shell/?manual_search=1&order=None\nBat:\nhttps://pixabay.com/sound-effects/search/squeak/"
+    \njump, power-up, shoot, hit - created with https://sfbgames.itch.io/chiptone\nSkull:\nhttps://pixabay.com/sound-effects/search/gasp/?manual_search=1&order=None\nCrab:\nhttps://pixabay.com/sound-effects/search/crack/?manual_search=1&order=None\nhttps://pixabay.com/sound-effects/search/shell/?manual_search=1&order=None\nBat:\nhttps://pixabay.com/sound-effects/search/squeak/"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: adfa06040b60d004bb8263f8de50c054, type: 2}
   m_sharedMaterial: {fileID: 5454179071222851758, guid: adfa06040b60d004bb8263f8de50c054, type: 2}
@@ -2291,7 +2289,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec40b2e02d6c4f344be9611fd813eeef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LevelName: AidasScene
+  LevelName: Level1
 --- !u!1 &1916918876
 GameObject:
   m_ObjectHideFlags: 0
